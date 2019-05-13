@@ -9,6 +9,7 @@ import (
 	"beego-test/lib"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/json-iterator/go"
 )
 
@@ -243,4 +244,19 @@ func (b *BaseController) GetQueryParam(v interface{}) (code int, err error) {
 	}
 
 	return 0, nil
+}
+
+// 获取管理员信息
+func (this *BaseController) getAdmin() (*lib.User, int, error) {
+	_user := this.GetSession("user")
+	if nil == _user {
+		logs.Error("get user failed")
+		return nil, lib.ERR_FORBIDDEN, errors.New("获取操作人信息失败")
+	}
+	user, ok := _user.(lib.User)
+	if !ok {
+		logs.Error("user type not match")
+		return nil, lib.ERR_FORBIDDEN, errors.New("获取操作人信息失败")
+	}
+	return &user, lib.OK, nil
 }
