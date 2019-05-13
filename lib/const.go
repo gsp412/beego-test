@@ -2,7 +2,9 @@ package lib
 
 // 业务常量配置
 const (
-	TK_TIME_OUT = 7200 // tk超时时间，单位：秒
+	TK_TIME_OUT       = 7200 // tk超时时间，单位：秒
+	DEFAULT_PAGE      = 1    // 默认页号: 1
+	DEFAULT_PAGE_SIZE = 10   // 默认页面大小: 10
 )
 
 // 正常
