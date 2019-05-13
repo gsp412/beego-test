@@ -1,4 +1,4 @@
-package models
+package lib
 
 import (
 	"time"
@@ -29,7 +29,7 @@ const DBNAME = "default"
  **返    回: 连接池数组
  **实现描述:
  **注意事项:
- **作    者: # Shuangpeng.guo # 2018-11-30 10:55:24 #
+ **作    者: # guoshuangpeng@le.com # 2019-05-13 10:03:58 #
  ******************************************************************************/
 func RegisterDb(addr string) {
 
@@ -62,7 +62,7 @@ func RegisterDb(addr string) {
  **返    回: 连接池数组
  **实现描述:
  **注意事项:
- **作    者: # Shuangpeng.guo # 2018-11-30 10:55:24 #
+ **作    者: # guoshuangpeng@le.com # 2019-05-13 10:04:10 #
  ******************************************************************************/
 func GetMysqlPool() *Pool {
 	/* 数据库连接对象 */

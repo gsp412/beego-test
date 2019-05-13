@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"beego-test/lib"
 	"beego-test/models"
 
 	"github.com/astaxie/beego"
@@ -25,7 +26,7 @@ func GetApiCntx() *models.ApiCntx {
  **返    回: 错误描述
  **实现描述:
  **注意事项:
- **作    者: # Shuangpeng.guo # 2019-04-15 15:57:51 #
+ **作    者: # guoshuangpeng@le.com # 2019-05-13 09:59:44 #
  *****************************************************************************/
 func Init(cf *models.ApiConf) (ctx *models.ApiCntx, err error) {
 	ctx = GetApiCntx()
@@ -37,9 +38,9 @@ func Init(cf *models.ApiConf) (ctx *models.ApiCntx, err error) {
 	logs.EnableFuncCallDepth(true)
 
 	/* 2.注册Mysql */
-	models.RegisterDb(cf.Mysql.Conn)
-	models.RegisterModel()            // 注册定义的Model
-	ctx.Mysql = models.GetMysqlPool() // 获取ORM
+	lib.RegisterDb(cf.Mysql.Conn)
+	lib.RegisterModel()            // 注册定义的Model
+	ctx.Mysql = lib.GetMysqlPool() // 获取ORM
 
 	if beego.BConfig.RunMode == beego.DEV {
 		orm.Debug = true
@@ -63,7 +64,7 @@ func Init(cf *models.ApiConf) (ctx *models.ApiCntx, err error) {
  **返    回: 错误描述
  **实现描述: 启动后台工作协程
  **注意事项:
- **作    者: # guoshuangpeng@le.com # 2019-04-15 15:58:17 #
+ **作    者: # guoshuangpeng@le.com # 2019-05-13 09:59:57 #
  ******************************************************************************/
 func Launch(ctx *models.ApiCntx) (err error) {
 

@@ -1,4 +1,9 @@
-package models
+package lib
+
+// 业务常量配置
+const (
+	TK_TIME_OUT = 7200 // tk超时时间，单位：秒
+)
 
 // 正常
 //  @状态码: 200
@@ -41,11 +46,11 @@ const (
 //  @状态原因: 服务器不理解客户端的请求, 未做任何处理!
 //  @错误码
 const (
-	ERR_BAD_REQ            = 400001 // 非法请求
-	ERR_PARAM_MISS         = 400002 // 参数缺失
-	ERR_PARAM_INVALID      = 400003 // 参数非法
-	ERR_HEAD_INVALID       = 400004 // 报头非法
-	ERR_BODY_INVALID       = 400005 // 报体非法
+	ERR_BAD_REQ       = 400001 // 非法请求
+	ERR_PARAM_MISS    = 400002 // 参数缺失
+	ERR_PARAM_INVALID = 400003 // 参数非法
+	ERR_HEAD_INVALID  = 400004 // 报头非法
+	ERR_BODY_INVALID  = 400005 // 报体非法
 )
 
 // 2.2 Unauthorized
@@ -54,7 +59,7 @@ const (
 //  @状态原因: 用户未提供身份验证凭据, 或者没有通过身份验证!
 //  @错误码
 const (
-	ERR_AUTH      = 401001 // 鉴权失败
+	ERR_AUTH = 401001 // 鉴权失败
 )
 
 // 2.3 Forbidden
@@ -63,7 +68,7 @@ const (
 //  @状态原因: 用户通过了身份验证, 但是不具有访问资源所需的权限!
 //  @错误码
 const (
-	ERR_FORBIDDEN           = 403001 // 访问受限
+	ERR_FORBIDDEN = 403001 // 访问受限
 )
 
 // 2.4 Not found
@@ -72,7 +77,7 @@ const (
 //  @状态原因: 所请求的资源不存在, 或不可用!
 //  @错误码
 const (
-	ERR_NOT_FOUND           = 404001 // 资源不存在
+	ERR_NOT_FOUND = 404001 // 资源不存在
 )
 
 // 2.5 Method not allowed
@@ -117,5 +122,5 @@ const (
 //  @状态原因: 客户端的请求次数超过限额!
 //  @错误码
 const (
-	ERR_TOO_MANY_REQ                     = 429001 // 请求次数超过限制
+	ERR_TOO_MANY_REQ = 429001 // 请求次数超过限制
 )

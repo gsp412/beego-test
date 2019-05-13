@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"reflect"
 
-	"beego-test/models"
+	"beego-test/lib"
 
 	"github.com/astaxie/beego"
 	"github.com/json-iterator/go"
@@ -45,34 +45,34 @@ func (b *BaseController) SendResponse(status int, code int, message string) {
 
 /* 发送应答消息 */
 func (b *BaseController) ErrorMessage(code int, message string) {
-	if code >= models.ERR_BAD_REQ && code < models.ERR_AUTH {
+	if code >= lib.ERR_BAD_REQ && code < lib.ERR_AUTH {
 		b.BadRequest(code, message)
 		return
-	} else if code >= models.ERR_AUTH && code < models.ERR_FORBIDDEN {
+	} else if code >= lib.ERR_AUTH && code < lib.ERR_FORBIDDEN {
 		b.Unauthorized(code, message)
 		return
-	} else if code >= models.ERR_FORBIDDEN && code < models.ERR_NOT_FOUND {
+	} else if code >= lib.ERR_FORBIDDEN && code < lib.ERR_NOT_FOUND {
 		b.Forbidden(code, message)
 		return
-	} else if code >= models.ERR_NOT_FOUND && code < models.ERR_METHOD_NOT_ALLOWED {
+	} else if code >= lib.ERR_NOT_FOUND && code < lib.ERR_METHOD_NOT_ALLOWED {
 		b.NotFound(code, message)
 		return
-	} else if code >= models.ERR_METHOD_NOT_ALLOWED && code < models.ERR_GONE {
+	} else if code >= lib.ERR_METHOD_NOT_ALLOWED && code < lib.ERR_GONE {
 		b.MethodNotAllowed(code, message)
 		return
-	} else if code >= models.ERR_GONE && code < models.ERR_UNSUPPORTED_MEDIA_TYPE {
+	} else if code >= lib.ERR_GONE && code < lib.ERR_UNSUPPORTED_MEDIA_TYPE {
 		b.Gone(code, message)
 		return
-	} else if code >= models.ERR_UNSUPPORTED_MEDIA_TYPE && code < models.ERR_UNPROCESSABLE_ENTITY {
+	} else if code >= lib.ERR_UNSUPPORTED_MEDIA_TYPE && code < lib.ERR_UNPROCESSABLE_ENTITY {
 		b.UnsupportedMediaType(code, message)
 		return
-	} else if code >= models.ERR_UNPROCESSABLE_ENTITY && code < models.ERR_TOO_MANY_REQ {
+	} else if code >= lib.ERR_UNPROCESSABLE_ENTITY && code < lib.ERR_TOO_MANY_REQ {
 		b.UnprocessableEntity(code, message)
 		return
-	} else if code >= models.ERR_TOO_MANY_REQ && code < models.ERR_INTERNAL_SERVER_ERROR {
+	} else if code >= lib.ERR_TOO_MANY_REQ && code < lib.ERR_INTERNAL_SERVER_ERROR {
 		b.TooManyRequests(code, message)
 		return
-	} else if code >= models.ERR_INTERNAL_SERVER_ERROR && code < models.ERR_SVC_UNAVAILABLE {
+	} else if code >= lib.ERR_INTERNAL_SERVER_ERROR && code < lib.ERR_SVC_UNAVAILABLE {
 		b.InternalServerError(code, message)
 		return
 	}
@@ -185,7 +185,7 @@ func (b *BaseController) GetQueryParam(v interface{}) (code int, err error) {
 	defer func() {
 		// 将panic转换为error 返回
 		if r := recover(); r != nil {
-			code = models.ERR_PARAM_INVALID
+			code = lib.ERR_PARAM_INVALID
 			err = errors.New("param unmarshal failed")
 		}
 	}()
@@ -194,7 +194,7 @@ func (b *BaseController) GetQueryParam(v interface{}) (code int, err error) {
 
 	// 判断如果传入类型不是指针或者是空值或者值不可改则返回序列化失败
 	if o.Kind() != reflect.Ptr || o.IsNil() || !o.Elem().CanSet() {
-		return models.ERR_PARAM_INVALID, errors.New("param unmarshal")
+		return lib.ERR_PARAM_INVALID, errors.New("param unmarshal")
 	}
 
 	vt := reflect.TypeOf(v).Elem()
@@ -205,7 +205,7 @@ func (b *BaseController) GetQueryParam(v interface{}) (code int, err error) {
 		// 如果结构体字段为指针类型 但尚未初始化则返回失败
 		if vr.Field(i).Kind() == reflect.Ptr && !vr.Field(i).Elem().CanSet() {
 			errMsg := fmt.Sprintf("[%s] uninitialized", vt.Field(i).Name)
-			return models.ERR_PARAM_INVALID, errors.New(errMsg)
+			return lib.ERR_PARAM_INVALID, errors.New(errMsg)
 		}
 
 		// 未设置注解的略过
@@ -217,7 +217,7 @@ func (b *BaseController) GetQueryParam(v interface{}) (code int, err error) {
 		_value := b.GetString(vt.Field(i).Tag.Get("json"), vt.Field(i).Tag.Get("def"))
 		if "" != vt.Field(i).Tag.Get("request") && "" == _value {
 			errMsg := fmt.Sprintf("[%s] param miss", vt.Field(i).Tag.Get("json"))
-			return models.ERR_PARAM_MISS, errors.New(errMsg)
+			return lib.ERR_PARAM_MISS, errors.New(errMsg)
 		} else if "" == _value {
 			// 如果未取到值则制空
 			vr.Field(i).Set(reflect.Zero(vr.Field(i).Type()))
@@ -228,9 +228,9 @@ func (b *BaseController) GetQueryParam(v interface{}) (code int, err error) {
 		typ := vr.Field(i).Type().String()
 
 		// 3、取实际值
-		value, err := models.ParamTypeConversion(_value, typ)
+		value, err := lib.ParamTypeConversion(_value, typ)
 		if nil != err {
-			return models.ERR_PARAM_INVALID, err
+			return lib.ERR_PARAM_INVALID, err
 		}
 
 		// 4、传值
