@@ -1,0 +1,79 @@
+swagger: "2.0"
+info:
+  title: 实验室管理系统API
+  description: 提供实验室管理系统相关API
+  version: 1.0.0
+  termsOfService: http://beego.me/
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+basePath: beego-test/v1
+paths:
+  /token/:
+    get:
+      tags:
+      - token
+      summary: 用户获取token接口
+      description: 用户获取token接口
+      operationId: TokenController.用户获取token接口
+      parameters:
+      - in: query
+        name: staff_no
+        description: 用户工号
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: 用户密码
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/controllers.TokenRsp'
+        "400":
+          description: ""
+definitions:
+  controllers.TokenData:
+    title: TokenData
+    type: object
+    properties:
+      id:
+        description: 用户ID
+        type: integer
+        format: int64
+      name:
+        description: 用户名称
+        type: string
+      staff_no:
+        description: 工号
+        type: string
+      tk:
+        description: 用户TK
+        type: string
+      type:
+        description: 用户类别：1：管理员 2：老师 3：学生
+        type: integer
+        format: int64
+  controllers.TokenRsp:
+    title: TokenRsp
+    type: object
+    properties:
+      code:
+        description: 详细错误码
+        type: integer
+        format: int64
+      data:
+        $ref: '#/definitions/controllers.TokenData'
+        description: 业务数据
+      message:
+        description: 错误描述
+        type: string
+tags:
+- name: token
+  description: |
+    token相关接口
+- name: user
+  description: |
+    用户相关接口
